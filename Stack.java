@@ -3,13 +3,13 @@ import java.util.EmptyStackException;
 // This is an int stack
 
 // implement stack with arrays
-class Stack {
+class ArrStack {
     static final int MAX = 1000;
     // index of the "top" element in stack
     int top;
     int[] s = new int[MAX];
     // constructor
-    Stack() {
+    ArrStack() {
         top = -1;
     }
 
@@ -19,23 +19,23 @@ class Stack {
     }
 
     // push
-    public boolean push(Stack stack, int n) {
+    public boolean push(int n) {
         // insert element to the last position in the array
         // increment top to point the position
-        if (stack.top >= MAX - 1) {
+        if (top >= MAX - 1) {
             System.out.println("stack overflow!");
             return false;
         } else {
-            stack.s[++stack.top] = n;
+            s[++top] = n;
             return true;
         }
     }
 
     // pop
-    public int pop(Stack stack) throws EmptyStackException {
+    public int pop() throws EmptyStackException {
         // return element at top then decrementing top
-        if (stack.top >= 0) {
-            return stack.s[stack.top--];
+        if (top >= 0) {
+            return s[top--];
         } else {
             throw new EmptyStackException("empty stack, nothing to pop");
         }
@@ -44,8 +44,8 @@ class Stack {
     // peek
     public int peek() throws EmptyStackException{
         // same as pop, just don't decrement top
-        if (stack.top >= 0) {
-            return stack.s[stack.top];
+        if (top >= 0) {
+            return s[top];
         } else {
             throw new EmptyStackException("empty stack, nothing to peek");
         }
@@ -97,5 +97,48 @@ class LLStack {
         } else {
             return head.val;
         }
+    }
+}
+
+
+// Stack exercises on Leetcode
+class LeetCodeExercises {
+    // 20. Valid Parentheses
+    // this is O(n)
+    public boolean validParentheses(String s) {
+        // for string of both left & right parentheses:
+        // push if left parenthesis, pop if right parenthesis
+        // when pop, check if it's the correct correspondent parenthesis
+        // start by go thru the string char by char
+        // for string with only left parentheses:
+        // check at the end whether stack is empty
+        Stack<Character> stk = new Stack<Character>();
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '(' || s.charAt(i) == '{' || s.charAt(i) == '[') {
+                stk.push(s.charAt(i));                
+            }
+            else if (s.charAt(i) == ')' || s.charAt(i) == '}' || s.charAt(i) == ']') {
+                try {
+                    char c = stk.pop().charValue();
+                    if (s.charAt(i) == ')' && c != '(') {
+                        return false;
+                    }
+                    if (s.charAt(i) == '}' && c != '{') {
+                        return false;
+                    }
+                    if (s.charAt(i) == ']' && c != '[') {
+                        return false;
+                    }
+                }
+                catch (Exception e) {
+                    return false;
+                }
+            }
+            else {
+                // for empty strings and strings of not all parentheses: return false
+                return false;
+            }
+        }
+        return stk.isEmpty();
     }
 }
