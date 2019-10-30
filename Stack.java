@@ -176,7 +176,5 @@ class LeetCodeExercises {
             return min;
         }
     }
-
-    
     
 }
