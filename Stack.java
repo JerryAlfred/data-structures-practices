@@ -112,21 +112,18 @@ class LeetCodeExercises {
         // start by go thru the string char by char
         // for string with only left parentheses:
         // check at the end whether stack is empty
-        Stack<Character> stk = new Stack<Character>();
+        Stack<Character> stk = new Stack<>();
+        HashMap<Character, Character> map = new HashMap<>();
+        map.put('}', '{');
+        map.put(']', '[');
+        map.put(')', '(');
         for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == '(' || s.charAt(i) == '{' || s.charAt(i) == '[') {
-                stk.push(s.charAt(i));                
+            if (map.containsValue(s.charAt(i))) {
+                stk.push(s.charAt(i));       
             }
-            else if (s.charAt(i) == ')' || s.charAt(i) == '}' || s.charAt(i) == ']') {
+            else if (map.containsKey(s.charAt(i))) {
                 try {
-                    char c = stk.pop().charValue();
-                    if (s.charAt(i) == ')' && c != '(') {
-                        return false;
-                    }
-                    if (s.charAt(i) == '}' && c != '{') {
-                        return false;
-                    }
-                    if (s.charAt(i) == ']' && c != '[') {
+                    if (stk.pop() != map.get(s.charAt(i))) {
                         return false;
                     }
                 }
@@ -135,10 +132,51 @@ class LeetCodeExercises {
                 }
             }
             else {
-                // for empty strings and strings of not all parentheses: return false
+                // for empty string or string of not all parentheses, return false
                 return false;
             }
         }
         return stk.isEmpty();
     }
+
+
+    // 155. Min Stack
+    // all operations in this class, including getMin, is O(1)
+    class MinStack {
+
+        /** initialize your data structure here. */
+        // keeps the min value and a stack
+        int min = Integer.MAX_VALUE;
+        Stack<Integer> s = new Stack<>();
+    
+        public void push(int x) {
+            // push min
+            s.push(min);
+            // push x
+            s.push(x);
+            // if x < min, update min
+            // now for every value we have a copy of the min before this value is added
+            if (x < min) {
+                min = x;
+            }
+        }
+        
+        public void pop() {
+            // pop the top value of stack
+            // pop the second time to get the min value before the top was pushed
+            s.pop();
+            min = s.pop();
+        }
+        
+        public int top() {
+            return s.peek();
+        }
+        
+        public int getMin() {
+            return min;
+        }
+    }
+
+    
+    
 }
