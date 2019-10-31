@@ -1,6 +1,8 @@
+import java.util.EmptyStackException;
+
 // integer queue
 // implement queue using array
-class Queue {
+class ArrQueue {
     private static final int MAX = 1000;
     // indices of head & tail element in queue
     int head = -1, tail = -1;
@@ -57,5 +59,81 @@ class Queue {
     public int peekRear() throws EmptyQueueException {
         if (tail < 0) throw new EmptyQueueException();
         return arr[tail];
+    }
+}
+
+
+// implement queue using linked list
+class LLQueue {
+    // queue wrapper class contains a head and rear node
+    QNode head, tail;
+
+    class QNode {
+        int val;
+        QNode next;
+    }
+
+    QNode(int d) {
+        val = d;
+        next = null;
+    }
+
+    LLQueue() {
+        head = tail = null;
+    }
+
+    // isEmpty
+    public boolean isEmpty() {
+        return (head == null);
+    }
+
+    // enqueue
+    public void enqueue(int n) {
+        QNode newNode = new QNode(n);
+        // empty queue
+        if (head == null) {
+            head = tail = newNode;
+        }
+        // queue with 1 and more elements
+        else {
+            tail.next = newNode;
+            tail = newNode;
+        }
+    }
+
+    // dequeue
+    public int dequeue() throws EmptyQueueException {
+        // empty queue
+        if (head == null) {
+            throw new EmptyQueueException();
+        }
+        // queue with 1 element
+        if (head == tail) {
+            int target = head.val;
+            head = tail = null;
+            return target;
+        }
+        // queue with more than 1 elements
+        else {
+            int target = head.val;
+            head = head.next;
+            return target;
+        }
+    }
+
+    // peekFront
+    public int peekFront() throws EmptyQueueException {
+        if (head == null) {
+            throw new EmptyQueueException();
+        }
+        return head.val;
+    }
+
+    // peekRear
+    public int peekRear() throws EmptyQueueException {
+        if (tail == null) {
+            throw new EmptyQueueException();
+        }
+        return tail.val;
     }
 }
