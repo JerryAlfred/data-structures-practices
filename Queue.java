@@ -1,5 +1,8 @@
 import java.util.EmptyStackException;
 
+// Useful post about time complexity of different implementations of queue & stack:
+// https://stackoverflow.com/questions/7477181/array-based-vs-list-based-stacks-and-queues
+
 // integer queue
 // implement queue using array
 class ArrQueue {
