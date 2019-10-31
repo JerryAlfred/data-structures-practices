@@ -272,5 +272,42 @@ class LeetCodeExercises {
         public boolean empty() {
             return q1.isEmpty();
         }
+
+
+        // Alright, let's implement a stack with *ONE* queue only!!
+        // Idea: change push(). To push x, enqueue x then dequeue and re-enqueue all the elements before x;
+        // how to know to stop when x is at top of queue? I thought about comparing each element with x before it enqueues;
+        // but it wouldn't work if some element before x has the same value.
+        // Solution: we can store the size of queue as a counter right after we enqueue x! 
+        // Then we can decrement this counter as it goes; when counter < 2, we stop because x is the last element in queue.
+        class MyStack {
+            // Initialize one queue
+            Queue<Integer> q = new LinkedList<Integer>();
+            
+            /** Push element x onto stack. */
+            public void push(int x) {
+                q.offer(x);
+                int size = q.size();
+                while (size > 1) {
+                    q.offer(q.poll());
+                    size--;
+                }
+            }
+            
+            /** Removes the element on top of the stack and returns that element. */
+            public int pop() {
+                return q.poll();
+            }
+            
+            /** Get the top element. */
+            public int top() {
+                return q.peek();
+            }
+            
+            /** Returns whether the stack is empty. */
+            public boolean empty() {
+                return q.isEmpty();
+            }
+        }
     }
 }
