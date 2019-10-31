@@ -228,6 +228,7 @@ class LeetCodeExercises {
         // initialize two queues with infinite capacity
         Queue<Integer> q1 = new LinkedList<>();
         Queue<Integer> q2 = new LinkedList<>();
+        // see comment above top() to know why I need to have this variable
         int top;
         
         /** Push element x onto stack. */
@@ -262,6 +263,7 @@ class LeetCodeExercises {
         /** Get the top element. */
         // since in this implementation we are only changing pop(), the elements in queue are not in stack order
         // so we needed to keep track of the top to easily return it for top()
+        // but the other solution of changing push() doesn't need the int top because elements in queue are in stack order for that
         public int top() {
             return top;
         }
