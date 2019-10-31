@@ -1,4 +1,5 @@
 import java.util.EmptyStackException;
+import java.util.Queue;
 
 // This is an int stack
 
@@ -176,5 +177,98 @@ class LeetCodeExercises {
             return min;
         }
     }
-    
+
+    // 225. Implement stack using queues
+    // General strategy: use two queues
+
+    // 1. by making push costly (O(n))
+    // Idea: to push x to q1, we want x to be at the beginning of the queue so that it can be easily popped by dequeuing.
+    // enqueue x to q2, dequeue all other elements in q1 to q2, then swap the names of q1 and q2.
+    class MyStack {
+        // initialize two queues with infinite capacity
+        Queue<Integer> q1 = new LinkedList<>();
+        Queue<Integer> q2 = new LinkedList<>();
+        
+        /** Push element x onto stack. */
+        public void push(int x) {
+            q2.offer(x);
+            while (!q1.isEmpty()) {
+                q2.offer(q1.poll());
+            }
+            // swap names so that we can always dequeue from q1
+            Queue<Integer> temp = q1;
+            q1 = q2;
+            q2 = temp;
+        }
+        
+        /** Removes the element on top of the stack and returns that element. */
+        public int pop() throws EmptyQueueException{
+            if (q1.peek() == null) {
+                throw new EmptyQueueException();
+            }
+            return q1.poll();
+        }
+        
+        /** Get the top element. */
+        public int top() {
+            return q1.peek();
+        }
+        
+        /** Returns whether the stack is empty. */
+        public boolean empty() {
+            return q1.isEmpty();
+        }
+    }
+
+    // 2. by making pop costly (O(n))
+    // Idea: enqueue new elements to q1; when pop, dequeue every element except for the last in q1 to q2;
+    // dequeue and return the last element in q1, then swap names for q1 and q2
+
+    class MyStack {
+        // initialize two queues with infinite capacity
+        Queue<Integer> q1 = new LinkedList<>();
+        Queue<Integer> q2 = new LinkedList<>();
+        int top;
+        
+        /** Push element x onto stack. */
+        public void push(int x) {
+                q1.offer(x);
+                top = x;
+        }
+
+        
+        /** Removes the element on top of the stack and returns that element. */
+        public int pop() throws EmptyQueueException{
+            int last = Integer.MIN_VALUE;
+            // here I use isEmpty() & some trick inside to keep things going, but can also use size() - 1
+            while (!q1.isEmpty()) {
+                // assign the top to the element before the last one
+                top = last;
+                last = q1.poll();
+                // enqueue only the elements before the last one
+                if (!q1.isEmpty()) {
+                    q2.offer(last);
+                }
+            }
+            if (last == Integer.MIN_VALUE) {
+                throw new EmptyQueueException();
+            }
+            Queue<Integer> temp = q1;
+            q1 = q2;
+            q2 = temp;
+            return last;
+        }
+        
+        /** Get the top element. */
+        // since in this implementation we are only changing pop(), the elements in queue are not in stack order
+        // so we needed to keep track of the top to easily return it for top()
+        public int top() {
+            return top;
+        }
+        
+        /** Returns whether the stack is empty. */
+        public boolean empty() {
+            return q1.isEmpty();
+        }
+    }
 }
