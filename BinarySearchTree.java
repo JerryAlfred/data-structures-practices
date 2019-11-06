@@ -1,7 +1,7 @@
 // Binary Search Tree characteristics:
 // all left children < root < all right children
 
-// Binary Search Tree Implementation
+// Implementation
 class Node {
     int val;
     Node l;
